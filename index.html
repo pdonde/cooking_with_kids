@@ -70,11 +70,28 @@ footer{margin-top:40px;color:var(--muted);font-size:.9rem}
 </div>
 
 <script>
-/* To add a recipe: put its page in its own folder (e.g. pancakes/index.html) and add one entry here. */
+/* To add a recipe: put its page in its own folder (e.g. pancake/index.html) and add one entry here. */
 const RECIPES=[
-  {name:'Noodle Kitchen', href:'noodles/index.html', steps:16, art:'noodles'}
+  {name:'Noodle Kitchen', href:'noodles/index.html', steps:16, art:'noodles'},
+  {name:'Pancake Kitchen', href:'pancake/index.html', steps:16, art:'pancake'},
+  {name:'Egg Sandwich Kitchen', href:'egg%20sandwich/index.html', steps:17, art:'eggSandwich', extra:'3 you can skip'}
 ];
 
+const kitchen=(wall,tile)=>`<rect width="400" height="300" fill="${wall}"/>
+    <g stroke="${tile}" stroke-width="2">${[46,92,138,184].map(y=>`<line x1="0" y1="${y}" x2="400" y2="${y}"/>`).join('')}${[50,100,150,200,250,300,350].map(x=>`<line x1="${x}" y1="0" x2="${x}" y2="222"/>`).join('')}</g>
+    <rect x="0" y="226" width="400" height="74" fill="#E3AE73"/><rect x="0" y="220" width="400" height="10" rx="2" fill="#C98B4B"/>
+    <path d="M30 256 h70 M150 272 h90 M290 258 h80" stroke="#D49B5E" stroke-width="2.5" stroke-linecap="round"/>`;
+const steamArt=(xs,y)=>`<g fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round">${xs.map((x,i)=>`<path class="steam" style="animation-delay:${(i*.8).toFixed(1)}s" d="M${x} ${y} q-10 -14 0 -28 t0 -28"/>`).join('')}</g>`;
+const plateArt=(cy)=>`<ellipse cx="200" cy="${cy+5}" rx="124" ry="22" fill="#D9C2A2" opacity=".55"/><ellipse cx="200" cy="${cy}" rx="120" ry="22" fill="#FFFFFF"/><ellipse cx="200" cy="${cy}" rx="92" ry="14" fill="none" stroke="#E2E7EE" stroke-width="3"/>`;
+const cakeArt=(y,rx)=>{const ry=rx*.24;return `<path d="M${200-rx} ${y} A${rx} ${ry} 0 0 0 ${200+rx} ${y} V${y+14} A${rx} ${ry} 0 0 1 ${200-rx} ${y+14} Z" fill="#D08B36"/><ellipse cx="200" cy="${y}" rx="${rx}" ry="${ry}" fill="#E2A24E"/><ellipse cx="200" cy="${y}" rx="${rx*.74}" ry="${ry*.66}" fill="#EDB563"/>`;};
+const bananaSlice=(x,y)=>`<g transform="translate(${x} ${y})"><ellipse rx="13" ry="7" fill="#FFF2C6" stroke="#E9D59A" stroke-width="2"/><circle cx="-3" r="1.4" fill="#B89155"/><circle cx="3" r="1.4" fill="#B89155"/><circle cy="-2.5" r="1.4" fill="#B89155"/></g>`;
+const sandwichHalf=(w)=>{let g='';for(let x=12;x<w-10;x+=20) g+=`<rect x="${x}" y="-5" width="9" height="3.5" rx="1.5" fill="#7E4A1E" opacity=".75"/>`;
+  return `<rect x="0" y="-16" width="${w}" height="16" rx="5" fill="#EDBB6A" stroke="#B5702C" stroke-width="3"/>${g}`+
+  `<rect x="-4" y="-21" width="${w+8}" height="6" rx="3" fill="#FFC93C"/><path d="M-4 -18 h8 v7 q0 8 -4 9 q-4 -1 -4 -8Z M${w-4} -18 h8 v9 q0 9 -4 10 q-4 -1 -4 -10Z" fill="#FFC93C"/>`+
+  `<rect x="6" y="-28" width="${w*.28}" height="7" rx="3.5" fill="#E5483A"/><rect x="${w*.36}" y="-28" width="${w*.28}" height="7" rx="3.5" fill="#E5483A"/><rect x="${w*.68}" y="-28" width="${w*.26}" height="7" rx="3.5" fill="#E5483A"/>`+
+  `<rect x="-3" y="-37" width="${w+6}" height="9" rx="4.5" fill="#FFFDF4" stroke="#E9D4A0" stroke-width="1.5"/><rect x="${w*.32}" y="-35.5" width="${w*.34}" height="6" rx="3" fill="#FFD15C"/>`+
+  `<path d="M8 -38.5 q5 -4 10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0" fill="none" stroke="#C8251B" stroke-width="3.5" stroke-linecap="round"/>`+
+  `<path d="M0 -40 V-48 Q0 -58 12 -58 H${w-12} Q${w} -58 ${w} -48 V-40 Z" fill="#EDBB6A" stroke="#B5702C" stroke-width="3"/>`+g.replace(/y="-5"/g,'y="-54"');};
 const ART={
   noodles:`<svg viewBox="0 0 400 300" aria-hidden="true">
     <rect width="400" height="300" fill="#D6ECEE"/>
@@ -104,6 +121,25 @@ const ART={
       <path d="M-8 74 V96 M0 74 V98 M8 74 V96" stroke="#9AA8B8" stroke-width="4" stroke-linecap="round"/>
       ${[84,91,98].map(y=>`<ellipse cx="0" cy="${y}" rx="16" ry="5.5" fill="none" stroke="#F6C945" stroke-width="4.5"/>`).join('')}
     </g>
+  </svg>`,
+  pancake:`<svg viewBox="0 0 400 300" aria-hidden="true">
+    ${kitchen('#FBE6CC','#F2D3AE')}
+    ${steamArt([164,204,244],112)}
+    ${plateArt(212)}
+    ${cakeArt(196,96)}${cakeArt(178,90)}${cakeArt(160,84)}
+    <path d="M150 158 C152 146 186 142 200 144 C222 141 252 146 250 158 C250 166 240 168 236 166 L234 186 Q231 193 228 186 L226 168 C210 170 190 170 172 168 L170 182 Q167 188 164 182 L163 167 C152 166 148 162 150 158Z" fill="#A85B1A" opacity=".92"/>
+    <ellipse cx="184" cy="151" rx="14" ry="3.5" fill="#fff" opacity=".35"/>
+    ${[[176,156],[204,162],[228,154],[196,148],[220,146]].map(([x,y])=>bananaSlice(x,y)).join('')}
+    <g transform="translate(342 214) rotate(-8)"><path d="M-42 -10 C-30 12 22 16 44 -8 C46 -4 44 0 40 4 C18 22 -30 18 -46 -4 Z" fill="#F7D13B" stroke="#D9A91E" stroke-width="2"/><rect x="40" y="-16" width="8" height="12" rx="2" fill="#6B4A2B" transform="rotate(30 44 -10)"/></g>
+  </svg>`,
+  eggSandwich:`<svg viewBox="0 0 400 300" aria-hidden="true">
+    ${kitchen('#FFEFC8','#F6DCA6')}
+    ${steamArt([150,200,250],118)}
+    ${plateArt(214)}
+    <g transform="translate(76 210) rotate(-6)">${sandwichHalf(118)}</g>
+    <g transform="translate(206 198) rotate(6)">${sandwichHalf(118)}</g>
+    <g transform="translate(46 210)"><path d="M-30 0 C-34 -8 -24 -14 -10 -14 C2 -18 20 -14 28 -8 C38 -2 32 6 22 8 C10 12 -8 12 -20 9 C-28 7 -30 4 -30 0Z" fill="#FFFFFF" stroke="#EFE6D2" stroke-width="1.5"/><ellipse cx="-2" cy="-3" rx="10" ry="6" fill="#FFB627"/><ellipse cx="-5" cy="-5" rx="3.5" ry="1.5" fill="#fff" opacity=".75"/></g>
+    <g transform="translate(360 212)"><circle r="16" fill="#E5483A"/><ellipse cx="-5" cy="-5" rx="4.5" ry="2.5" fill="#fff" opacity=".35"/><path d="M0 -15 l-6 -4 M0 -15 l6 -4 M0 -15 l0 -6" stroke="#4E9A4A" stroke-width="3" stroke-linecap="round"/></g>
   </svg>`
 };
 const PLAY='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>';
@@ -113,7 +149,7 @@ document.getElementById('recipes').innerHTML=RECIPES.map(r=>`
     <div class="art">${ART[r.art]||''}</div>
     <div class="body">
       <h2 class="name">${r.name}</h2>
-      <ul class="meta"><li>${r.steps} steps</li><li>Pictures</li><li>Spoken steps</li></ul>
+      <ul class="meta"><li>${r.steps} steps</li>${r.extra?`<li>${r.extra}</li>`:''}<li>Pictures</li><li>Spoken steps</li></ul>
       <span class="play">${PLAY}Let's cook</span>
     </div>
   </a></li>`).join('')+
