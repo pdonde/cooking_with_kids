@@ -8,6 +8,7 @@ Live site: https://pdonde.github.io/cooking_with_kids/
 - [Noodle Kitchen](noodles/index.html): 16 steps, from washing hands to eating
 - [Pancake Kitchen](pancake/index.html): 16 steps of fluffy banana pancakes
 - [Egg Sandwich Kitchen](egg-sandwich/index.html): 17 steps, a fried egg and cheese sandwich toasted in a panini maker (mayo, tomato and ketchup are optional)
+- [Pasta Kitchen](pasta/index.html): 18 steps. Pick spaghetti, penne or bow ties, then make a sauce with shrimp or chicken, green beans and pasta sauce (more veggies are optional)
 
 ## Adding a recipe
 1. Make a folder for it, e.g. `pancake/`, and put the game in it as `index.html`.
